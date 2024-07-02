@@ -3,6 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const mongoString = process.env.DATABASE_URL;
 const routes = require("./routes/index");
+const nofrogetRoutes = require('./routes/nofroget');
+const userRoutes = require("./routes/user");
 const port = process.env.PORT;
 
 mongoose.connect(mongoString);
@@ -19,6 +21,8 @@ database.once("connected", () => {
 const app = express();
 app.use(express.json());
 app.use("/api", routes);
+app.use("/api/nofroget", nofrogetRoutes);
+app.use("/api/user", userRoutes);
 app.listen(port, () => {
 	console.log(`Server Started at ${port}`);
 });
