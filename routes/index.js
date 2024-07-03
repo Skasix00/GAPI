@@ -7,5 +7,4 @@ router.get("/status", (req, res) => {
 	res.send("ALL OK!");
 });
 
-
 module.exports = router;
