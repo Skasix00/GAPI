@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 function GenerateToken(userId) {
 	const token = jwt.sign({ userId: userId }, `${process.env.JWT_SECRET}`);
@@ -14,4 +15,15 @@ function VerifyToken(token) {
 	}
 }
 
-module.exports = { GenerateToken, VerifyToken };
+async function encryptPassword(password) {
+	const salt = await bcrypt.genSalt(12);
+	const hash = await bcrypt.hash(password, salt);
+	return hash;
+}
+
+async function decryptPassword(password) {
+	const salt = await bcrypt.genSalt(12);
+	const isCorrect = await bcrypt.compare(password, salt);
+	return isCorrect;
+}
+module.exports = { GenerateToken, VerifyToken, encryptPassword, decryptPassword };
