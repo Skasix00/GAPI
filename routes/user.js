@@ -78,11 +78,12 @@ router.get("/generateToken/:id", async (req, res) => {
 	});
 });
 
-router.post("/verifyToken", (req, res) => {
+router.post("/verifyToken", async (req, res) => {
 	const token = req.query.token;
-
-	if (token) {
-		const isValidToken = authProvider.VerifyToken(token);
+	const sanitizedToken = await authProvider.removeFirstAndLastChars(token);
+	console.log(sanitizedToken);
+	if (sanitizedToken) {
+		const isValidToken = authProvider.VerifyToken(sanitizedToken);
 
 		isValidToken === "OK"
 			? res.status(200).json({

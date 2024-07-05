@@ -26,4 +26,9 @@ async function decryptPassword(password) {
 	const isCorrect = await bcrypt.compare(password, salt);
 	return isCorrect;
 }
-module.exports = { GenerateToken, VerifyToken, encryptPassword, decryptPassword };
+
+async function removeFirstAndLastChars(input) {
+	const sanitized = await input.substring(1, input.length - 1);
+	return sanitized;
+}
+module.exports = { GenerateToken, VerifyToken, encryptPassword, decryptPassword, removeFirstAndLastChars };
