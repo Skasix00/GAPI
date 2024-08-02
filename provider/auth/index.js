@@ -21,9 +21,8 @@ async function encryptPassword(password) {
 	return hash;
 }
 
-async function decryptPassword(password) {
-	const salt = await bcrypt.genSalt(12);
-	const isCorrect = await bcrypt.compare(password, salt);
+async function decryptPassword(password, passwordBD) {
+	const isCorrect = await bcrypt.compare(password, passwordBD);
 	return isCorrect;
 }
 

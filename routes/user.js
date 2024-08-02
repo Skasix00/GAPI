@@ -17,10 +17,17 @@ router.get("/login", async (req, res) => {
 	try {
 		const data = await Model.findOne({ username: req.query.username });
 		const password = req.query.password;
-
-		if (data.password !== password) {
+		const isCorrect = await authProvider.decryptPassword(password, data.password);
+		if (isCorrect !== true) {
 			res.status(403).send("Login Inválido");
 		} else {
+			try {
+				userID = data._id;
+				const token = await authProvider.GenerateToken(userID);
+				await Model.findByIdAndUpdate({_id: userID}, {token: token});
+			} catch (error) {
+				console.log(error);
+			}
 			res.status(200).json(data);
 		}
 	} catch (error) {
@@ -80,10 +87,9 @@ router.get("/generateToken/:id", async (req, res) => {
 
 router.post("/verifyToken", async (req, res) => {
 	const token = req.query.token;
-	const sanitizedToken = await authProvider.removeFirstAndLastChars(token);
-	console.log(sanitizedToken);
-	if (sanitizedToken) {
-		const isValidToken = authProvider.VerifyToken(sanitizedToken);
+	//const sanitizedToken = await authProvider.removeFirstAndLastChars(token);
+	if (token) {
+		const isValidToken = authProvider.VerifyToken(token);
 
 		isValidToken === "OK"
 			? res.status(200).json({
