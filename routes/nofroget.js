@@ -22,8 +22,13 @@ router.get("/services/getAll", async (req, res) => {
 });
 
 //Get specific clients
-router.get("/services/:id", (req, res) => {
-	res.send(req.params.id);
+router.get("/services/:id", async (req, res) => {
+	try {
+		const isExisting = await ServicesModel.findOne({ _id: req.params.id });
+		res.json(isExisting);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
 });
 
 //Submit a new Service
@@ -68,8 +73,13 @@ router.get("/clients/getAll", async (req, res) => {
 });
 
 //Get specific client
-router.get("/clients/:id", (req, res) => {
-	res.send(req.params.id);
+router.get("/clients/:id", async (req, res) => {
+	try {
+		const isExisting = await ClientModel.findOne({ _id: req.params.id });
+		res.json(isExisting);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
 });
 
 //Submit a new Client
@@ -80,6 +90,8 @@ router.post("/clients/addNew", async (req, res) => {
 		Age: req.body.Age,
 		Score: req.body.Score,
 		NVisits: req.body.NVisits,
+		isActive: req.body.isActive,
+		isDeleted: req.body.isDeleted,
 	});
 
 	try {

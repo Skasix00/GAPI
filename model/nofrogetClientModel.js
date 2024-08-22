@@ -21,6 +21,14 @@ const dataSchema = new mongoose.Schema({
 		type: Number,
 		required: false,
 	},
+	isActive: {
+		type: Boolean,
+		required: false,
+	},
+	isDeleted: {
+		type: Boolean,
+		required: false,
+	},
 });
 
 module.exports = mongoose.model("NoFrogetClient", dataSchema);
