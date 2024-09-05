@@ -21,11 +21,28 @@ router.get("/services/getAll", async (req, res) => {
 	}
 });
 
-//Get specific clients
+//Get specific service
 router.get("/services/:id", async (req, res) => {
 	try {
 		const isExisting = await ServicesModel.findOne({ _id: req.params.id });
 		res.json(isExisting);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+});
+
+//Update specific service
+router.put("/services/update/:id", async (req, res) => {
+	let serviceId = req.params.id;
+	try {
+		const updatedModel = await ServicesModel.findByIdAndUpdate(serviceId, {
+			title: req.body.title,
+			description: req.body.description,
+			price: req.body.price,
+			isActive: req.body.isActive,
+			isDeleted: req.body.isDeleted,
+		});
+		res.status(200).json(updatedModel);
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
@@ -99,6 +116,25 @@ router.post("/clients/addNew", async (req, res) => {
 		res.status(200).json(dataToSave);
 	} catch (error) {
 		res.status(400).json({ message: error.message });
+	}
+});
+
+//Update specific client
+router.put("/clients/update/:id", async (req, res) => {
+	let clientId = req.params.id;
+	try {
+		const updatedModel = await ClientModel.findByIdAndUpdate(clientId, {
+			ClientName: req.body.ClientName,
+			Birthdate: req.body.Birthdate,
+			Age: req.body.Age,
+			Score: 0,
+			NVisits: 0,
+			isActive: req.body.isActive,
+			isDeleted: req.body.isDeleted,
+		});
+		res.status(200).json(updatedModel);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
 	}
 });
 
