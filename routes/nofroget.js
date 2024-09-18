@@ -5,8 +5,6 @@ const ClientModel = require("../model/nofrogetClientModel");
 
 const router = express.Router();
 
-//Need update by ID
-//All get specific record aren't working still
 //Need to add authentication to the routes
 
 ///Services///
@@ -152,7 +150,7 @@ router.delete("/clients/delete", async (req, res) => {
 ///Posts///
 
 //Get all posts
-router.get("/getAll", async (req, res) => {
+router.get("/post/getAll", async (req, res) => {
 	try {
 		const data = await Model.find();
 		res.json(data);
@@ -162,8 +160,13 @@ router.get("/getAll", async (req, res) => {
 });
 
 //Get specific post
-router.get("/post/:id", (req, res) => {
-	res.send(req.params.id);
+router.get("/post/:id", async (req, res) => {
+	try {
+		const isExisting = await Model.findOne({ _id: req.params.id });
+		res.json(isExisting);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
 });
 
 //Create a Post
