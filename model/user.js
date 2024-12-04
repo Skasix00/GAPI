@@ -25,6 +25,11 @@ const dataSchema = new mongoose.Schema({
 		required: true,
 		type: String,
 	},
+	group:{
+		required: true,
+		type: Number
+
+	},
 	active:{
 		required: true,
 		type: Boolean

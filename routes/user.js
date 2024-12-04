@@ -24,7 +24,8 @@ router.get("/login", async (req, res) => {
 			try {
 				userID = data._id;
 				const token = await authProvider.GenerateToken(userID);
-				await Model.findByIdAndUpdate({_id: userID}, {token: token});
+				let user = await Model.findByIdAndUpdate({_id: userID}, {token: token});
+				console.log(user);
 			} catch (error) {
 				console.log(error);
 			}
@@ -50,6 +51,7 @@ router.post("/createUser", async (req, res) => {
 			password: encryptedPassword,
 			token: req.body.token,
 			active: 1,
+			group: req.body.group
 		});
 
 		try {
