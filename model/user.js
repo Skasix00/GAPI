@@ -34,7 +34,11 @@ const dataSchema = new mongoose.Schema({
 		required: true,
 		type: Boolean
 
-	}
+	},
+	client_id:{
+		required: false,
+		type: String,
+	},
 });
 
 module.exports = mongoose.model("User", dataSchema);
